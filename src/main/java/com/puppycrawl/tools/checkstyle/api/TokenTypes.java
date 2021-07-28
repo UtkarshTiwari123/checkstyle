@@ -4960,6 +4960,84 @@ public final class TokenTypes {
 
     /**
      * A {@code <} symbol signifying the start of type arguments or type parameters.
+     * <p>For example:</p>
+     * <pre>
+     * class test1
+     * {
+     * public static void main(String ar[])
+     * {
+     * int a=10,b=5;
+     * if(a>b)
+     * System.out.println(a);
+     * }
+     * }
+     * </pre>
+     * <p>parses as:</p>
+     * <pre>
+     * CLASS_DEF -&gt; CLASS_DEF
+     * |--MODIFIERS -&gt; MODIFIERS
+     * |--LITERAL_CLASS -&gt; class
+     * |--IDENT -&gt; test1
+     * `--OBJBLOCK -&gt; OBJBLOCK
+     *     |--LCURLY -&gt; {
+     *     |--METHOD_DEF -&gt; METHOD_DEF
+     *     |   |--MODIFIERS -&gt; MODIFIERS
+     *     |   |   |--LITERAL_PUBLIC -&gt; public
+     *     |   |   `--LITERAL_STATIC -&gt; static
+     *     |   |--TYPE -&gt; TYPE
+     *     |   |   `--LITERAL_VOID -&gt; void
+     *     |   |--IDENT -&gt; main
+     *     |   |--LPAREN -&gt; (
+     *     |   |--PARAMETERS -&gt; PARAMETERS
+     *     |   |   `--PARAMETER_DEF -&gt; PARAMETER_DEF
+     *     |   |       |--MODIFIERS -&gt; MODIFIERS
+     *     |   |       |--TYPE -&gt; TYPE
+     *     |   |       |   |--IDENT -&gt; String
+     *     |   |       |   `--ARRAY_DECLARATOR -&gt; [
+     *     |   |       |       `--RBRACK -&gt; ]
+     *     |   |       `--IDENT -&gt; ar
+     *     |   |--RPAREN -&gt; )
+     *     |   `--SLIST -&gt; {
+     *     |       |--VARIABLE_DEF -&gt; VARIABLE_DEF
+     *     |       |   |--MODIFIERS -&gt; MODIFIERS
+     *     |       |   |--TYPE -&gt; TYPE
+     *     |       |   |   `--LITERAL_INT -&gt; int
+     *     |       |   |--IDENT -&gt; a
+     *     |       |   `--ASSIGN -&gt; =
+     *     |       |       `--EXPR -&gt; EXPR
+     *     |       |           `--NUM_INT -&gt; 10
+     *     |       |--COMMA -&gt; ,
+     *     |       |--VARIABLE_DEF -&gt; VARIABLE_DEF
+     *     |       |   |--MODIFIERS -&gt; MODIFIERS
+     *     |       |   |--TYPE -&gt; TYPE
+     *     |       |   |   `--LITERAL_INT -&gt; int
+     *     |       |   |--IDENT -&gt; b
+     *     |       |   `--ASSIGN -&gt; =
+     *     |       |       `--EXPR -&gt; EXPR
+     *     |       |           `--NUM_INT -&gt; 5
+     *     |       |--SEMI -&gt; ;
+     *     |       |--LITERAL_IF -&gt; if
+     *     |       |   |--LPAREN -&gt; (
+     *     |       |   |--EXPR -&gt; EXPR
+     *     |       |   |   `--GT -&gt; &gt;
+     *     |       |   |       |--IDENT -&gt; a
+     *     |       |   |       `--IDENT -&gt; b
+     *     |       |   |--RPAREN -&gt; )
+     *     |       |   |--EXPR -&gt; EXPR
+     *     |       |   |   `--METHOD_CALL -&gt; (
+     *     |       |   |       |--DOT -&gt; .
+     *     |       |   |       |   |--DOT -&gt; .
+     *     |       |   |       |   |   |--IDENT -&gt; System
+     *     |       |   |       |   |   `--IDENT -&gt; out
+     *     |       |   |       |   `--IDENT -&gt; println
+     *     |       |   |       |--ELIST -&gt; ELIST
+     *     |       |   |       |   `--EXPR -&gt; EXPR
+     *     |       |   |       |       `--IDENT -&gt; a
+     *     |       |   |       `--RPAREN -&gt; )
+     *     |       |   `--SEMI -&gt; ;
+     *     |       `--RCURLY -&gt; }
+     *     `--RCURLY -&gt; }
+     * </pre>
      */
     public static final int GENERIC_START =
         GeneratedJavaTokenTypes.GENERIC_START;
